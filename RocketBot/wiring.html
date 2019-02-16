@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Wiring</title>
+    <style type="text/css" media="screen">
+      table {
+          text-align: left;
+          width: 480px;
+
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+          border-collapse:collapse;
+          border-spacing:0px;
+      }
+      th {
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+      }
+      .pound {
+          width: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Wiring</h1>
+                    <h2>DIO</h2>
+        <table><tr>
+            <th class="pound">#</th>
+            <th>Subsystem</th>
+            <th>Sensor</th></tr>
+                                                                        <tr><td>0</td><td>ArmSubsystem </td><td>RotaryEncoder</td><td></td></tr>
+                                                                                              <tr><td>1</td><td>ArmSubsystem </td><td>RotaryEncoder</td><td></td></tr>
+                                                                                                                                                                                                                                                                                                                                             </table>
+                    <h2>PWMs</h2>
+        <table><tr>
+            <th class="pound">#</th>
+            <th>Subsystem</th>
+            <th>Motor</th>
+            <th>Type</th></tr>
+                                                    <tr><td>0</td><td>ArmSubsystem </td><td>LeftArmMotor</td><td>Spark</td></tr>
+                                                          <tr><td>1</td><td>ArmSubsystem </td><td>RightArmMotor</td><td>Spark</td></tr>
+                                                          <tr><td>2</td><td>JawSubsystem </td><td>LeftJawMotor</td><td>Spark</td></tr>
+                                                          <tr><td>3</td><td>JawSubsystem </td><td>RightJawMotor</td><td>Spark</td></tr>
+                                                                                                                                                                                                                                                                                                     </table>
+     
+                <h2>CAN IDs</h2>
+    <table><tr>
+    <th class="pound">ID</th>
+    <th>Subsystem</th>
+    <th>Device</th>
+    <th>Type</th></tr>
+                                              <tr><td>0</td><td>DrivetrainSubsystem </td><td>LeftMasterMotor</td><td>Talon SRX</td></tr>
+                                                          <tr><td>1</td><td>DrivetrainSubsystem </td><td>RightMasterMotor</td><td>Talon SRX</td></tr>
+                                                          <tr><td>2</td><td>DrivetrainSubsystem </td><td>LeftSlaveMotor</td><td>Victor SPX</td></tr>
+                                                          <tr><td>3</td><td>DrivetrainSubsystem </td><td>RightSlaveMotor</td><td>Victor SPX</td></tr>
+                                                                                                                                                                                                                                                                                                 </table>
+    
+            
+                        
+                                                                                                                                                                                                                                                            
+          </body>
+</html>
