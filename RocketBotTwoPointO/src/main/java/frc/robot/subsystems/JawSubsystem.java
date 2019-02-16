@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.commands.ManualJawCommand;
 
 /**
@@ -22,12 +23,16 @@ public class JawSubsystem extends Subsystem {
 
   public JawSubsystem(){
     leftJawMotor = new Spark(2);
-    //addChild("LeftJawMotor",leftJawMotor);
     leftJawMotor.setInverted(false);
     
     rightJawMotor = new Spark(3);
-    //addChild("RightJawMotor",rightJawMotor);
     rightJawMotor.setInverted(true);
+
+    setName("Jaw Subsystem Components");
+    addChild("LeftJawMotor",leftJawMotor);    
+    addChild("RightJawMotor",rightJawMotor);
+
+    LiveWindow.add(this);
   }
 
   public void setSpeed(double speed){

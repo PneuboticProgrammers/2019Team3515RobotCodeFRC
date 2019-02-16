@@ -10,17 +10,20 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDriveCommand;
 
 /**
  * Add your docs here.
  */
-public class DriveTrainSubsystem extends Subsystem {
+public class DriveTrainSubsystem extends PIDSubsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private WPI_TalonSRX leftMasterMotor;
@@ -28,8 +31,20 @@ public class DriveTrainSubsystem extends Subsystem {
   private WPI_VictorSPX leftSlaveMotor;
   private WPI_VictorSPX rightSlaveMotor;
   private DifferentialDrive drive;
+  private Ultrasonic ultraRange;
 
   public DriveTrainSubsystem() {
+    //Setting PID Constraints
+    super("DriveTrainSubsystem", RobotMap.kdP, RobotMap.kdI, RobotMap.kdD);
+    setAbsoluteTolerance(RobotMap.dTtolerance);
+
+    getPIDController().setContinuous(false);
+    getPIDController().setName("DriveTrainSubsystem", "PIDSubsystem Controller");
+
+    //I will use Ultrasonic for now, but hoepfully we can tune PID for the MAG SRX encoders later
+    ultraRange = new Ultrasonic(RobotMap.ultraPort, RobotMap.ultraPingPort); //DIO channel, Digital eco output channel, both DIO ports I think
+    ultraRange.setAutomaticMode(true);
+
     leftMasterMotor = new WPI_TalonSRX(0);
     rightMasterMotor = new WPI_TalonSRX(1);
     leftSlaveMotor = new WPI_VictorSPX(2);
@@ -39,9 +54,15 @@ public class DriveTrainSubsystem extends Subsystem {
     leftSlaveMotor.follow(leftMasterMotor);
     rightSlaveMotor.follow(rightMasterMotor);
 
-    // initSendable(leftMasterBuilder);
-    // leftMasterBuilder
-    // LiveWindow.addChild("leftMasterMotor", leftMasterMotor);
+    setName("DriveTrain Subsystem Components");
+    addChild("Left Master", leftMasterMotor);
+    addChild("Right Master", rightMasterMotor);
+    addChild("Left Slave", leftSlaveMotor);
+    addChild("Right Slave", rightSlaveMotor);
+    addChild("Ultrasonic", ultraRange);
+    addChild(getPIDController());
+
+    LiveWindow.add(this);
   }
 
   public void setDrive(double power, double angle){
@@ -54,10 +75,15 @@ public class DriveTrainSubsystem extends Subsystem {
 
     if((angle > -0.1) && (angle < 0.1)){
       leftMasterMotor.set(power);
+      rightMasterMotor.setInverted(true);
+      rightMasterMotor.set(power);
     }
     else{
+      rightMasterMotor.setInverted(false);
       drive.arcadeDrive(power, angle);
     }
+    
+    SmartDashboard.putNumber("Ultrasonic Range", returnPIDInput());
     
   }
 
@@ -65,5 +91,20 @@ public class DriveTrainSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new ArcadeDriveCommand());
+  }
+
+  @Override
+  protected double returnPIDInput() {
+    return ultraRange.getRangeInches();
+  }
+
+  @Override
+  public void usePIDOutput(double output) {
+    leftMasterMotor.pidWrite(output);
+
+    rightMasterMotor.setInverted(true);
+    rightMasterMotor.pidWrite(output);
+
+    SmartDashboard.putNumber("PID Ultrasonic Range", returnPIDInput());
   }
 }

@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.ManualArmCommand;
 
 /**
  * Add your docs here.
@@ -33,16 +35,16 @@ public class ArmSubsystem extends PIDSubsystem {
   public ArmSubsystem() {
     // Insert a subsystem name and PID values here
     
-    super("SubsystemName", RobotMap.kP, RobotMap.kI, RobotMap.kD);
+    super("ArmSubsystem", RobotMap.kP, RobotMap.kI, RobotMap.kD);
     // Use these to get going:
     // setSetpoint() - Sets where the PID controller should move the system
     // to
     // enable() - Enables the PID controller.
-    setAbsoluteTolerance(0.2);
+    setAbsoluteTolerance(RobotMap.tolerance);
     getPIDController().setContinuous(false);
     getPIDController().setName("ArmSubsystem", "PIDSubsystem Controller");
 
-    rotaryEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+    rotaryEncoder = new Encoder(RobotMap.RotaryEncoderChannelA, RobotMap.RotaryEncoderChannelB, false, EncodingType.k4X); //May have to change encoding type
     rotaryEncoder.setDistancePerPulse(256.0);
     rotaryEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
     
@@ -53,7 +55,7 @@ public class ArmSubsystem extends PIDSubsystem {
     rightArmMotor.setInverted(true);
 
     //Setting the sendableBase and putting it on LiveWindow
-    setName("armSubsystemComponents");
+    setName("Arm Subsystem Components");
     addChild("RotaryEncoder", rotaryEncoder);
     addChild("LeftArmMotor",leftArmMotor);
     addChild("RightArmMotor",rightArmMotor);
@@ -66,7 +68,7 @@ public class ArmSubsystem extends PIDSubsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ManualArmCommand());
   }
 
   @Override
@@ -78,10 +80,20 @@ public class ArmSubsystem extends PIDSubsystem {
   }
 
   @Override
-  protected void usePIDOutput(double output) {
+  public void usePIDOutput(double output) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
     leftArmMotor.pidWrite(output);
     rightArmMotor.pidWrite(output);
+    SmartDashboard.putNumber("PID EncoderValue", returnPIDInput());
+
+  }
+
+  //Capabilities of ArmSubsystem
+  public void setArmTurn(double speed){
+    rightArmMotor.set(speed);
+    leftArmMotor.set(speed); //Motor already inverted, so not necessary to negate speed
+    SmartDashboard.putNumber("EncoderValue", returnPIDInput());
+
   }
 }

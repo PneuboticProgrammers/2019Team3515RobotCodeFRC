@@ -8,14 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class ManualArmCommand extends Command {
-  public ManualArmCommand() {
+public class DriveToDistanceCommand extends Command {
+  public DriveToDistanceCommand() {
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.armSubsystem);
+    requires(Robot.driveTrainSubsystem);
   }
 
   // Called just before this Command runs the first time
@@ -26,8 +25,7 @@ public class ManualArmCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double armTurn = -Robot.oi.joy.getRawAxis(5);
-    Robot.armSubsystem.setArmTurn(armTurn);
+    Robot.driveTrainSubsystem.usePIDOutput(RobotMap.driveRange);
   }
 
   // Make this return true when this Command no longer needs to run execute()

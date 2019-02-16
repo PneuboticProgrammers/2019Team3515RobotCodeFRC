@@ -16,13 +16,17 @@ package frc.robot;
 public class RobotMap {
   
   //PWM
-  public static final int RotaryEncoderChannelA = 0;
-  public static final int RotaryEncoderChannelB = 1;
   public static final int LeftArmMotorPort = 0;
   public static final int RightArmMotorPort = 1;
   public static final int LeftJawMotorPort = 2;
   public static final int RightJawMotorPort = 3; 
   
+  //DIO
+  public static final int RotaryEncoderChannelA = 0;
+  public static final int RotaryEncoderChannelB = 1;
+  public static final int ultraPort = 1;
+  public static final int ultraPingPort = 1;
+
   //CAN
   public static final int LeftMasterMotorPort = 1;
   public static final int RightMasterMotorPort = 0;
@@ -33,11 +37,19 @@ public class RobotMap {
   public static final int JoyPort = 0;
 
   //PID Config
-  public static final double kP = 0.0;
-  public static final double kI = 0.0;
-  public static final double kD = 0.0;
-  public static final double kF = 0.0;
-  public static final double tolerance = 0.0;
+    //Arm Subsystem
+      public static final double kP = 10.0;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+      public static final double kF = 0.0;
+      public static final double tolerance = 2.0;
+    //DriveTrain Subsystem
+      public static final double kdP = 10.0;
+      public static final double kdI = 0.0;
+      public static final double kdD = 0.0;
+      public static final double kdF = 0.0;
+      public static final double dTtolerance = 2.0;
+      public static final double driveRange = 50.0;
 
   //Speed Constraints
   public static final double maxSpeed = 0.7;
