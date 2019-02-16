@@ -59,7 +59,7 @@ public class ArmSubsystem extends PIDSubsystem {
     addChild("RightArmMotor",rightArmMotor);
     addChild(getPIDController());
     
-    LiveWindow.add(Robot.armSubsystem);
+    LiveWindow.add(this);
     // LiveWindow.addSensor("Arm Subsystem", "Rotary Encoder", rotaryEncoder); //I may have to change this to rotaryEncoder.getDistance()    
   }
 

@@ -28,7 +28,7 @@ import frc.robot.subsystems.JawSubsystem;
 public class Robot extends TimedRobot {
   public static DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   public static JawSubsystem jawSubsystem = new JawSubsystem();
-  public static Sendable armSubsystem = new ArmSubsystem();
+  public static ArmSubsystem armSubsystem = new ArmSubsystem();
 
   
   public static OI oi;
